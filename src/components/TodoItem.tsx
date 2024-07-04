@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Todo } from '../types';
+import { ReactComponent as DeleteIcon } from '../assets/icons/delete-icon.svg';
+import { ReactComponent as EditIcon } from '../assets/icons/edit-icon.svg';
 
 const ListItem = styled.li`
   display: flex;
@@ -15,6 +17,10 @@ const Text = styled.span<{ completed: boolean }>`
 
 const Button = styled.button`
   margin-left: 10px;
+`;
+
+const Checkbox = styled.input`
+  margin-right: 10px;
 `;
 
 interface TodoItemProps {
@@ -46,6 +52,11 @@ const TodoItem: React.FC<TodoItemProps> = ({
 
   return (
     <ListItem>
+      <Checkbox
+        type="checkbox"
+        checked={todo.completed}
+        onChange={() => toggleTodo(index)}
+      />
       {isEditing ? (
         <input
           type="text"
@@ -59,12 +70,13 @@ const TodoItem: React.FC<TodoItemProps> = ({
         {isEditing ? (
           <Button onClick={handleSave}>Save</Button>
         ) : (
-          <Button onClick={handleEdit}>Edit</Button>
+          <Button onClick={handleEdit}>
+            <EditIcon />
+          </Button>
         )}
-        <Button onClick={() => toggleTodo(index)}>
-          {todo.completed ? 'Undo' : 'Complete'}
+        <Button onClick={() => deleteTodo(index)}>
+          <DeleteIcon />
         </Button>
-        <Button onClick={() => deleteTodo(index)}>Delete</Button>
       </div>
     </ListItem>
   );
